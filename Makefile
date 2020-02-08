@@ -53,11 +53,6 @@ clean-cache:
 	@echo + Removing build cache volume
 	docker volume rm $(CACHE_VOLUME)
 
-# creates the output directory
-out-dir:
-	@echo + Ensuring build output directory exists
-	mkdir -p $(OUT_DIR)
-
 # cleans the output directory
 clean-output:
 	@echo + Removing build output directory
@@ -78,9 +73,8 @@ kind: make-cache out-dir
 		-e CGO_ENABLED=0 \
 		-e GOOS=$(GOOS) \
 		-e GOARCH=$(GOARCH) \
-		--user $(UID):$(GID) \
 		$(GO_IMAGE) \
-		go build -v -o /out/$(KIND_BINARY_NAME) .
+	  go build -v -o /out/$(KIND_BINARY_NAME) .
 	@echo + Built kind binary to $(OUT_DIR)/$(KIND_BINARY_NAME)
 
 # alias for building kind
